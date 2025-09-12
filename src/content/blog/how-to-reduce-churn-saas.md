@@ -3,12 +3,7 @@ title: "How to reduce churn in SaaS without burning cash on acquisition"
 description: "Stop bleeding customers and cash. Learn proven strategies to reduce churn rate in B2B SaaS companies and turn retention into your biggest growth driver."
 pubDate: 2025-09-12
 heroImage: "/blog/saas-churn-featured.jpg"
-author:
-  name: "Ben Robertson"
-  bio: "Founder of ChurnPill."
-  avatar: "/avatars/ben-smith.jpg"
-  twitter: "bensmith"
-  linkedin: "ben-smith-retention"
+author: "ben-robertson"
 tags: ["saas", "churn", "retention", "b2b", "customer-success"]
 readTime: "9 min read"
 featured: true

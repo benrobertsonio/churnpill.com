@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Login - ChurnPill" description="Sign in to your ChurnPill account to access your dashboard and churn prevention tools.">
+  <div class="relative isolate overflow-hidden bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <svg aria-hidden="true" class="absolute inset-0 -z-10 size-full mask-[radial-gradient(100%_100%_at_top_right,white,transparent)] stroke-gray-200 dark:stroke-white/10">
+      <defs>
+        <pattern id="login-pattern" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+          <path d="M.5 200V.5H200" fill="none" />
+        </pattern>
+      </defs>
+      <svg x="50%" y="-1" class="overflow-visible fill-gray-50 dark:fill-gray-800/20">
+        <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+      </svg>
+      <rect width="100%" height="100%" fill="url(#login-pattern)" stroke-width="0" />
+    </svg>
+    
+    <div class="mx-auto max-w-sm w-full px-6">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white" style="font-family: 'Gambarino', serif;">Welcome back</h1>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400" style="font-family: 'Archivo', sans-serif;">Sign in to your ChurnPill account</p>
+      </div>
+      
+      <div class="bg-white dark:bg-gray-800 py-8 px-6 shadow-md rounded-lg border border-gray-200 dark:border-gray-700">
+        <form class="space-y-6">
+          <div>
+            <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" style="font-family: 'Archivo', sans-serif;">
+              Email address
+            </label>
+            <div class="mt-2">
+              <input 
+                id="email" 
+                name="email" 
+                type="email" 
+                autocomplete="email" 
+                required 
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-700 dark:text-white dark:ring-gray-600 dark:placeholder:text-gray-400 dark:focus:ring-primary-500"
+                style="font-family: 'Archivo', sans-serif;"
+              >
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <label for="password" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white" style="font-family: 'Archivo', sans-serif;">
+                Password
+              </label>
+              <div class="text-sm">
+                <a href="#" class="font-semibold text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300" style="font-family: 'Archivo', sans-serif;">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div class="mt-2">
+              <input 
+                id="password" 
+                name="password" 
+                type="password" 
+                autocomplete="current-password" 
+                required 
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-700 dark:text-white dark:ring-gray-600 dark:placeholder:text-gray-400 dark:focus:ring-primary-500"
+                style="font-family: 'Archivo', sans-serif;"
+              >
+            </div>
+          </div>
+
+          <div>
+            <button 
+              type="submit" 
+              class="flex w-full justify-center rounded-md bg-primary-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:bg-primary-500 dark:hover:bg-primary-400"
+              style="font-family: 'Archivo', sans-serif;"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+
+        <div class="mt-6">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300 dark:border-gray-600" />
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="bg-white px-2 text-gray-500 dark:bg-gray-800 dark:text-gray-400" style="font-family: 'Archivo', sans-serif;">
+                Coming soon
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400" style="font-family: 'Archivo', sans-serif;">
+          Don't have an account?{' '}
+          <a href="#" class="font-semibold leading-6 text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
+            Sign up
+          </a>
+        </p>
+      </div>
+      
+      <div class="mt-8 text-center">
+        <a href="/" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300" style="font-family: 'Archivo', sans-serif;">
+          ← Back to home
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

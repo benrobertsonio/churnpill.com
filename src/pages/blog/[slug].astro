@@ -15,6 +15,13 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
+// get author data from authors collection
+const author = await getEntry('authors', post.data.author);
+
+if (!author) {
+  throw new Error(`Author "${post.data.author}" not found for post "${post.slug}"`);
+}
+
 // get all posts for related posts
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -51,9 +58,9 @@ const articleData = {
   "image": `${Astro.site}${post.data.heroImage || '/blog/default-featured.jpg'}`,
   "author": {
     "@type": "Person",
-    "name": post.data.author.name,
-    "description": post.data.author.bio,
-    "url": `${Astro.site}/authors/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`
+    "name": author.data.name,
+    "description": author.data.bio,
+    "url": `${Astro.site}/blog/author/${author.slug}`
   },
   "publisher": {
     "@type": "Organization",
@@ -142,16 +149,16 @@ const organizationData = {
             <div class="flex items-center space-x-8 text-sm text-gray-500 mb-8">
               <div class="flex items-center">
                 <img 
-                  src={post.data.author.avatar || '/avatars/default.jpg'} 
-                  alt={post.data.author.name}
+                  src={author.data.avatar || '/avatars/default.jpg'} 
+                  alt={author.data.name}
                   class="w-8 h-8 rounded-full mr-3"
                   onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiLz4KPC9zdmc+Cjwvc3ZnPg=='"
                 />
                 <a 
-                  href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`/blog/author/${author.slug}`}
                   class="font-medium text-gray-700 hover:text-gray-900 transition-colors"
                 >
-                  {post.data.author.name}
+                  {author.data.name}
                 </a>
               </div>
               <div>
@@ -182,10 +189,10 @@ const organizationData = {
           <!-- Author Bio -->
           <div class="mt-24 pt-12 border-t border-gray-200">
             <div class="flex items-start max-w-2xl">
-              <a href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}>
+              <a href={`/blog/author/${author.slug}`}>
                 <img 
-                  src={post.data.author.avatar || '/avatars/default.jpg'} 
-                  alt={post.data.author.name}
+                  src={author.data.avatar || '/avatars/default.jpg'} 
+                  alt={author.data.name}
                   class="w-16 h-16 rounded-full mr-6 flex-shrink-0 hover:opacity-90 transition-opacity"
                   onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
                 />
@@ -194,28 +201,33 @@ const organizationData = {
                 <h3 class="text-xl font-gambarino font-semibold text-gray-900 mb-3">
                   About 
                   <a 
-                    href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    href={`/blog/author/${author.slug}`}
                     class="hover:text-gray-600 transition-colors"
                   >
-                    {post.data.author.name}
+                    {author.data.name}
                   </a>
                 </h3>
-                <p class="text-gray-600 mb-4 leading-relaxed">{post.data.author.bio}</p>
+                <p class="text-gray-600 mb-4 leading-relaxed">{author.data.longBio || author.data.bio}</p>
                 <div class="flex space-x-6">
                   <a 
-                    href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    href={`/blog/author/${author.slug}`}
                     class="text-gray-500 hover:text-gray-700 transition-colors text-sm"
                   >
                     View all articles
                   </a>
-                  {post.data.author.twitter && (
-                    <a href={`https://twitter.com/${post.data.author.twitter}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                  {author.data.twitter && (
+                    <a href={`https://twitter.com/${author.data.twitter}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
                       Twitter
                     </a>
                   )}
-                  {post.data.author.linkedin && (
-                    <a href={`https://linkedin.com/in/${post.data.author.linkedin}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                  {author.data.linkedin && (
+                    <a href={`https://linkedin.com/in/${author.data.linkedin}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
                       LinkedIn
+                    </a>
+                  )}
+                  {author.data.website && (
+                    <a href={author.data.website} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                      Website
                     </a>
                   )}
                 </div>

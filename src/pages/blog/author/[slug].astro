@@ -16,12 +16,7 @@ const { author } = Astro.props;
 // get all blog posts by this author
 const allPosts = await getCollection('blog');
 const authorPosts = allPosts
-  .filter(post => {
-    // match by name since the blog posts have inline author objects
-    const authorName = post.data.author.name.toLowerCase().trim();
-    const targetName = author.data.name.toLowerCase().trim();
-    return authorName === targetName;
-  })
+  .filter(post => post.data.author === author.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // structured data for SEO

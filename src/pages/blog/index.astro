@@ -1,10 +1,18 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_LOGO, SOCIAL_LINKS } from '../../config/site';
 
 const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// get author data for all posts
+const postsWithAuthors = await Promise.all(
+  sortedPosts.map(async (post) => {
+    const author = await getEntry('authors', post.data.author);
+    return { post, author };
+  })
+);
 
 const organizationData = {
   "@context": "https://schema.org",
@@ -35,19 +43,19 @@ const organizationData = {
 
       <!-- Blog Posts -->
       <div class="max-w-4xl mx-auto space-y-16">
-        {sortedPosts.map((post) => (
+        {postsWithAuthors.map(({ post, author }) => (
           <article class="group">
             <a href={`/blog/${post.slug}`} class="block">
               <!-- Header -->
               <div class="flex items-center mb-6">
                 <img 
-                  src={post.data.author.avatar || '/avatars/default.jpg'} 
-                  alt={post.data.author.name}
+                  src={author?.data.avatar || '/avatars/default.jpg'} 
+                  alt={author?.data.name || 'Author'}
                   class="w-12 h-12 rounded-full mr-4"
                   onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxMCIgeT0iMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
                 />
                 <div>
-                  <p class="font-medium text-gray-900 text-sm">{post.data.author.name}</p>
+                  <p class="font-medium text-gray-900 text-sm">{author?.data.name || 'Unknown Author'}</p>
                   <p class="text-gray-500 text-sm">
                     {post.data.pubDate.toLocaleDateString('en-US', { 
                       month: 'long', 

@@ -3,12 +3,7 @@ title: "What is churn rate in SaaS and why every founder gets it wrong"
 description: "Most SaaS founders track churn wrong and miss the patterns that predict business failure. Learn the real churn metrics that matter and benchmarks for 2025."
 pubDate: 2025-09-12
 heroImage: "/blog/churn-rate-saas-featured.jpg"
-author:
-  name: "Ben Robertson"
-  bio: "Founder of ChurnPill."
-  avatar: "/avatars/ben-smith.jpg"
-  twitter: "bensmith"
-  linkedin: "ben-smith-retention"
+author: "ben-robertson"
 tags: ["saas", "churn", "metrics", "retention", "analytics", "growth"]
 readTime: "12 min read"
 featured: true

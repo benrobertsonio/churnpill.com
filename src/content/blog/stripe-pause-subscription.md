@@ -3,12 +3,7 @@ title: "Stripe pause subscription turns cancellations into holds"
 description: "Learn how to implement Stripe pause subscription features to reduce churn and retain customers who might otherwise cancel permanently."
 pubDate: 2025-09-12
 heroImage: "/blog/stripe-pause-featured.jpg"
-author:
-  name: "Ben Robertson"
-  bio: "Founder of ChurnPill."
-  avatar: "/avatars/ben-smith.jpg"
-  twitter: "bensmith"
-  linkedin: "ben-smith-retention"
+author: "ben-robertson"
 tags: ["stripe", "subscriptions", "churn", "retention", "saas"]
 readTime: "8 min read"
 featured: true

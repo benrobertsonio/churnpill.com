@@ -13,11 +13,7 @@ const sortedAuthors = authors.sort((a, b) => {
 // get blog posts to show article counts per author
 const allPosts = await getCollection('blog');
 const authorPostCounts = authors.reduce((acc, author) => {
-  const count = allPosts.filter(post => {
-    const authorName = post.data.author.name.toLowerCase().trim();
-    const targetName = author.data.name.toLowerCase().trim();
-    return authorName === targetName;
-  }).length;
+  const count = allPosts.filter(post => post.data.author === author.slug).length;
   acc[author.slug] = count;
   return acc;
 }, {} as Record<string, number>);
