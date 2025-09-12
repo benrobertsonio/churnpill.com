@@ -89,7 +89,7 @@ const authorSince = firstPost?.data.pubDate || author.data.joinDate;
 ---
 
 <Layout 
-  title={`${author.data.name} - Author at Density Disk`} 
+  title={`${author.data.name} - Author at ${SITE_NAME}`} 
   description={`Read articles by ${author.data.name}. ${author.data.bio} Browse ${totalPosts} article${totalPosts !== 1 ? 's' : ''} on SaaS, churn, and growth.`}
 >
   <div class="min-h-screen bg-white">
