@@ -227,22 +227,6 @@ ol li {
   line-height: 1.625;
 }
 
-/* Beautiful links */
-a {
-  color: #475569;
-  transition: color 0.2s;
-  text-decoration: none;
-  position: relative;
-}
-
-a:hover {
-  color: #334155;
-  text-decoration: underline;
-  text-decoration-color: #64748b;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 2px;
-}
-
 /* Code styling */
 code {
   background-color: #f3f4f6;
