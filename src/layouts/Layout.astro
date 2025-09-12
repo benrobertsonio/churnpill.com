@@ -15,9 +15,16 @@ const { title = SITE_NAME, description = SITE_DESCRIPTION } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=archivo@200,201,400,401&display=swap" rel="stylesheet">
+		<link rel="dns-prefetch" href="//api.fontshare.com" />
+		<link rel="dns-prefetch" href="//tailwindcss.com" />
+		<link rel="preconnect" href="https://api.fontshare.com" />
+		<link rel="preconnect" href="https://tailwindcss.com" />
+		<link rel="preload" href="https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=archivo@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+		<noscript><link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=archivo@400&display=swap" rel="stylesheet"></noscript>
+		<link rel="preload" href="https://tailwindcss.com/plus-assets/img/component-images/project-app-screenshot.png" as="image" media="(prefers-color-scheme: light)" />
+		<link rel="preload" href="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png" as="image" media="(prefers-color-scheme: dark)" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
@@ -27,6 +34,28 @@ const { title = SITE_NAME, description = SITE_DESCRIPTION } = Astro.props;
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<style>
+			/* Critical CSS for above-the-fold content */
+			:root {
+				--font-gambarino: "Gambarino", serif;
+				--font-archivo: "Archivo", sans-serif;
+			}
+			body {
+				font-family: var(--font-archivo), system-ui, sans-serif;
+				font-weight: 400;
+				color: #1f2937;
+				line-height: 1.625;
+				margin: 0;
+				width: 100%;
+			}
+			h1 {
+				font-family: var(--font-gambarino), serif;
+				font-weight: 600;
+				margin: 0;
+			}
+			/* Hide content until fonts load to prevent FOUT */
+			.font-gambarino { font-family: var(--font-gambarino), serif; }
+		</style>
 	</head>
 	<body>
 		<Header />
