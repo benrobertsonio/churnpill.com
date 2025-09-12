@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://churnpill.com/sitemap.xml
+
+# Allow search engines to crawl all content
+# This is optimal for SEO as we want maximum visibility
+# for our SaaS marketing site and blog content
+
+# If you have any admin areas or private content in the future,
+# add them here like:
+# Disallow: /admin/
+# Disallow: /private/
