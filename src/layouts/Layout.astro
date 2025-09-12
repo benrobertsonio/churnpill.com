@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import { SITE_NAME, SITE_DESCRIPTION } from '../config/site';
+import '../styles/global.css';
 
 export interface Props {
   title?: string;
@@ -26,7 +27,6 @@ const { title = SITE_NAME, description = SITE_DESCRIPTION } = Astro.props;
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<link rel="stylesheet" href="/src/styles/global.css" />
 	</head>
 	<body>
 		<Header />

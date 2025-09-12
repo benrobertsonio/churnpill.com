@@ -114,7 +114,7 @@ const organizationData = {
 
 <Layout title={`${post.data.title} - ${SITE_NAME} Blog`} description={post.data.description}>
   <div class="min-h-screen bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-24">
       <!-- Breadcrumb -->
       <nav class="mb-16">
         <ol class="flex items-center space-x-2 text-sm text-gray-500">
@@ -126,125 +126,151 @@ const organizationData = {
         </ol>
       </nav>
 
-      <!-- Main Content -->
-      <article class="max-w-none">
-        <!-- Header -->
-        <header class="mb-16 text-center">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-gambarino font-bold mb-8 leading-tight tracking-tight text-gray-900">
-            {post.data.title}
-          </h1>
-          <p class="text-xl md:text-2xl leading-relaxed text-gray-600 mb-12 max-w-3xl mx-auto">
-            {post.data.description}
-          </p>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <!-- Main Content -->
+        <article class="lg:col-span-8">
+          <!-- Header -->
+          <header class="mb-16">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-gambarino font-bold mb-8 leading-tight tracking-tight text-gray-900">
+              {post.data.title}
+            </h1>
+            <p class="text-xl md:text-2xl leading-relaxed text-gray-600 mb-12">
+              {post.data.description}
+            </p>
 
-          <!-- Article Meta -->
-          <div class="flex items-center justify-center space-x-8 text-sm text-gray-500 mb-8">
-            <div class="flex items-center">
-              <img 
-                src={post.data.author.avatar || '/avatars/default.jpg'} 
-                alt={post.data.author.name}
-                class="w-8 h-8 rounded-full mr-3"
-                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiLz4KPC9zdmc+Cjwvc3ZnPg=='"
-              />
-              <a 
-                href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
-                class="font-medium text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                {post.data.author.name}
-              </a>
-            </div>
-            <div>
-              {post.data.pubDate.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
-            </div>
-            <div>{post.data.readTime}</div>
-          </div>
-
-          <!-- Tags -->
-          <div class="flex flex-wrap justify-center gap-3">
-            {post.data.tags.map((tag: string) => (
-              <span class="inline-block bg-gray-100 text-gray-600 text-sm px-4 py-2 rounded-full">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </header>
-
-        <!-- Article Content -->
-        <div class="max-w-none article-content prose prose-lg mx-auto">
-          <Content />
-        </div>
-
-        <!-- Author Bio -->
-        <div class="mt-24 pt-12 border-t border-gray-200">
-          <div class="flex items-start max-w-2xl">
-            <a href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}>
-              <img 
-                src={post.data.author.avatar || '/avatars/default.jpg'} 
-                alt={post.data.author.name}
-                class="w-16 h-16 rounded-full mr-6 flex-shrink-0 hover:opacity-90 transition-opacity"
-                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
-              />
-            </a>
-            <div>
-              <h3 class="text-xl font-gambarino font-semibold text-gray-900 mb-3">
-                About 
+            <!-- Article Meta -->
+            <div class="flex items-center space-x-8 text-sm text-gray-500 mb-8">
+              <div class="flex items-center">
+                <img 
+                  src={post.data.author.avatar || '/avatars/default.jpg'} 
+                  alt={post.data.author.name}
+                  class="w-8 h-8 rounded-full mr-3"
+                  onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiLz4KPC9zdmc+Cjwvc3ZnPg=='"
+                />
                 <a 
                   href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  class="hover:text-gray-600 transition-colors"
+                  class="font-medium text-gray-700 hover:text-gray-900 transition-colors"
                 >
                   {post.data.author.name}
                 </a>
-              </h3>
-              <p class="text-gray-600 mb-4 leading-relaxed">{post.data.author.bio}</p>
-              <div class="flex space-x-6">
-                <a 
-                  href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  class="text-gray-500 hover:text-gray-700 transition-colors text-sm"
-                >
-                  View all articles
-                </a>
-                {post.data.author.twitter && (
-                  <a href={`https://twitter.com/${post.data.author.twitter}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
-                    Twitter
+              </div>
+              <div>
+                {post.data.pubDate.toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </div>
+              <div>{post.data.readTime}</div>
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-3">
+              {post.data.tags.map((tag: string) => (
+                <span class="inline-block bg-gray-100 text-gray-600 text-sm px-4 py-2 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </header>
+
+          <!-- Article Content -->
+          <div class="max-w-none article-content">
+            <Content />
+          </div>
+
+          <!-- Author Bio -->
+          <div class="mt-24 pt-12 border-t border-gray-200">
+            <div class="flex items-start max-w-2xl">
+              <a href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                <img 
+                  src={post.data.author.avatar || '/avatars/default.jpg'} 
+                  alt={post.data.author.name}
+                  class="w-16 h-16 rounded-full mr-6 flex-shrink-0 hover:opacity-90 transition-opacity"
+                  onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
+                />
+              </a>
+              <div>
+                <h3 class="text-xl font-gambarino font-semibold text-gray-900 mb-3">
+                  About 
+                  <a 
+                    href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    class="hover:text-gray-600 transition-colors"
+                  >
+                    {post.data.author.name}
                   </a>
-                )}
-                {post.data.author.linkedin && (
-                  <a href={`https://linkedin.com/in/${post.data.author.linkedin}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
-                    LinkedIn
+                </h3>
+                <p class="text-gray-600 mb-4 leading-relaxed">{post.data.author.bio}</p>
+                <div class="flex space-x-6">
+                  <a 
+                    href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    class="text-gray-500 hover:text-gray-700 transition-colors text-sm"
+                  >
+                    View all articles
                   </a>
-                )}
+                  {post.data.author.twitter && (
+                    <a href={`https://twitter.com/${post.data.author.twitter}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                      Twitter
+                    </a>
+                  )}
+                  {post.data.author.linkedin && (
+                    <a href={`https://linkedin.com/in/${post.data.author.linkedin}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Related Posts -->
-        {sortedPosts.filter(p => p.slug !== post.slug).length > 0 && (
-          <div class="mt-24 pt-12 border-t border-gray-200">
-            <h3 class="text-2xl font-gambarino font-semibold text-gray-900 mb-12 text-center">Related Posts</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {sortedPosts
-                .filter(p => p.slug !== post.slug)
-                .slice(0, 2)
-                .map((relatedPost) => (
-                  <div>
-                    <h4 class="font-gambarino font-semibold text-gray-900 mb-3 leading-tight text-lg">
-                      <a href={`/blog/${relatedPost.slug}`} class="hover:text-gray-600 transition-colors">
-                        {relatedPost.data.title}
-                      </a>
-                    </h4>
-                    <p class="text-gray-600 mb-3 leading-relaxed">{relatedPost.data.description}</p>
-                    <p class="text-sm text-gray-500">{relatedPost.data.readTime}</p>
-                  </div>
-                ))}
+          <!-- Related Posts -->
+          {sortedPosts.filter(p => p.slug !== post.slug).length > 0 && (
+            <div class="mt-24 pt-12 border-t border-gray-200">
+              <h3 class="text-2xl font-gambarino font-semibold text-gray-900 mb-12">Related Posts</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {sortedPosts
+                  .filter(p => p.slug !== post.slug)
+                  .slice(0, 2)
+                  .map((relatedPost) => (
+                    <div>
+                      <h4 class="font-gambarino font-semibold text-gray-900 mb-3 leading-tight text-lg">
+                        <a href={`/blog/${relatedPost.slug}`} class="hover:text-gray-600 transition-colors">
+                          {relatedPost.data.title}
+                        </a>
+                      </h4>
+                      <p class="text-gray-600 mb-3 leading-relaxed">{relatedPost.data.description}</p>
+                      <p class="text-sm text-gray-500">{relatedPost.data.readTime}</p>
+                    </div>
+                  ))}
+              </div>
             </div>
+          )}
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="lg:col-span-4">
+          <div class="sticky top-8">
+            <!-- Table of Contents -->
+            {tableOfContents.length > 0 && (
+              <div class="mb-12">
+                <h3 class="text-lg font-gambarino font-semibold text-gray-900 mb-6">Contents</h3>
+                <nav class="space-y-1">
+                  {tableOfContents.map((heading) => (
+                    <a 
+                      href={`#${heading.slug}`} 
+                      class={`block text-sm text-gray-600 hover:text-gray-900 py-2 transition-colors border-l-2 border-transparent hover:border-gray-300 pl-4 ${
+                        heading.level === 3 ? 'ml-4 text-xs pl-6' : ''
+                      }`}
+                    >
+                      {heading.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )}
           </div>
-        )}
-      </article>
+        </aside>
+      </div>
     </div>
   </div>
 
@@ -258,7 +284,6 @@ const organizationData = {
   /* Clean, minimal typography for article content */
   .article-content {
     max-width: 65ch;
-    margin: 0 auto;
   }
 
   .article-content h1 {

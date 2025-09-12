@@ -1,24 +1,24 @@
 ---
 name: "Ben Robertson"
-bio: "Founder of ChurnPill."
-longBio: "Ben Robertson is the founder of ChurnPill, a SaaS retention platform that helps businesses reduce customer churn through predictive analytics and automated intervention campaigns. With over 8 years of experience in SaaS growth and retention, Ben has helped dozens of companies improve their customer lifetime value and reduce churn rates. He's particularly passionate about using data-driven approaches to understand customer behavior and predict churn before it happens."
+bio: "Founder of ChurnPill, with deep customer success expertise from Gatsby Inc and Netlify."
+longBio: "Ben Robertson is the founder of ChurnPill, a SaaS retention platform that helps businesses reduce customer churn through predictive analytics and automated intervention campaigns. Previously, he led customer success at Gatsby Inc and Netlify, bringing deep expertise in helping SaaS companies grow sustainably."
 title: "Founder & CEO"
 company: "ChurnPill"
 avatar: "/avatars/ben-smith.jpg"
-twitter: "bensmith"
-linkedin: "ben-smith-retention"
-github: "benrobertson"
+twitter: "benrobertsonio"
+linkedin: "benjamingrobertson"
+github: "benrobertsonio"
 website: "https://churnpill.com"
-location: "San Francisco, CA"
+location: "Travelers Rest, SC"
 expertise:
   [
     "SaaS Growth",
     "Customer Retention",
     "Churn Analysis",
     "Product Analytics",
-    "Revenue Operations",
+    "Customer Success",
   ]
-joinDate: 2023-01-15
+joinDate: 2025-09-12
 featured: true
 ---
 
