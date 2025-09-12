@@ -1,0 +1,311 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { SITE_NAME } from '../../../config/site';
+
+export async function getStaticPaths() {
+  const authors = await getCollection('authors');
+  return authors.map((author) => ({
+    params: { slug: author.slug },
+    props: { author }
+  }));
+}
+
+const { author } = Astro.props;
+
+// get all blog posts by this author
+const allPosts = await getCollection('blog');
+const authorPosts = allPosts
+  .filter(post => {
+    // match by name since the blog posts have inline author objects
+    const authorName = post.data.author.name.toLowerCase().trim();
+    const targetName = author.data.name.toLowerCase().trim();
+    return authorName === targetName;
+  })
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// structured data for SEO
+const personData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": author.data.name,
+  "description": author.data.longBio || author.data.bio,
+  "image": `${Astro.site}${author.data.avatar || '/avatars/default.jpg'}`,
+  "url": `${Astro.site}/blog/author/${author.slug}`,
+  "jobTitle": author.data.title,
+  "worksFor": author.data.company ? {
+    "@type": "Organization",
+    "name": author.data.company
+  } : undefined,
+  "sameAs": [
+    author.data.twitter && `https://twitter.com/${author.data.twitter}`,
+    author.data.linkedin && `https://linkedin.com/in/${author.data.linkedin}`,
+    author.data.github && `https://github.com/${author.data.github}`,
+    author.data.website
+  ].filter(Boolean),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `${Astro.site}/blog/author/${author.slug}`
+  },
+  "knowsAbout": author.data.expertise || []
+};
+
+const breadcrumbData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": Astro.site
+    },
+    {
+      "@type": "ListItem", 
+      "position": 2,
+      "name": "Blog",
+      "item": `${Astro.site}/blog`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Authors",
+      "item": `${Astro.site}/blog/authors`
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": author.data.name,
+      "item": `${Astro.site}/blog/author/${author.slug}`
+    }
+  ]
+};
+
+// calculate some stats
+const totalPosts = authorPosts.length;
+const firstPost = authorPosts.length > 0 ? authorPosts[authorPosts.length - 1] : null;
+const latestPost = authorPosts.length > 0 ? authorPosts[0] : null;
+const authorSince = firstPost?.data.pubDate || author.data.joinDate;
+---
+
+<Layout 
+  title={`${author.data.name} - Author at Density Disk`} 
+  description={`Read articles by ${author.data.name}. ${author.data.bio} Browse ${totalPosts} article${totalPosts !== 1 ? 's' : ''} on SaaS, churn, and growth.`}
+>
+  <div class="min-h-screen bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-24">
+      <!-- Breadcrumb -->
+      <nav class="mb-16">
+        <ol class="flex items-center space-x-2 text-sm text-gray-500">
+          <li><a href="/" class="hover:text-gray-700 transition-colors">Home</a></li>
+          <li class="text-gray-300">/</li>
+          <li><a href="/blog" class="hover:text-gray-700 transition-colors">Blog</a></li>
+          <li class="text-gray-300">/</li>
+          <li><a href="/blog/authors" class="hover:text-gray-700 transition-colors">Authors</a></li>
+          <li class="text-gray-300">/</li>
+          <li class="text-gray-900">{author.data.name}</li>
+        </ol>
+      </nav>
+
+      <!-- Author Header -->
+      <div class="mb-24">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="mb-12">
+            <img 
+              src={author.data.avatar || '/avatars/default.jpg'} 
+              alt={author.data.name}
+              class="w-32 h-32 rounded-full mx-auto mb-8 shadow-lg"
+              onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjY0IiBjeT0iNjQiIHI9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxzdmcgeD0iMzIiIHk9IjMyIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiLz4KPC9zdmc+Cjwvc3ZnPg=='"
+            />
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-gambarino font-bold mb-6 leading-tight tracking-tight text-gray-900">
+              {author.data.name}
+            </h1>
+            {author.data.title && author.data.company && (
+              <p class="text-xl text-gray-600 mb-6">
+                {author.data.title} at {author.data.company}
+              </p>
+            )}
+            {author.data.location && (
+              <p class="text-lg text-gray-500 mb-8">
+                📍 {author.data.location}
+              </p>
+            )}
+          </div>
+
+          <div class="max-w-2xl mx-auto">
+            <p class="text-xl md:text-2xl leading-relaxed text-gray-600 mb-8">
+              {author.data.longBio || author.data.bio}
+            </p>
+            
+            <!-- Social Links -->
+            {(author.data.twitter || author.data.linkedin || author.data.github || author.data.website) && (
+              <div class="flex justify-center space-x-6 mb-8">
+                {author.data.twitter && (
+                  <a 
+                    href={`https://twitter.com/${author.data.twitter}`} 
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span class="sr-only">Twitter</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                  </a>
+                )}
+                {author.data.linkedin && (
+                  <a 
+                    href={`https://linkedin.com/in/${author.data.linkedin}`} 
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span class="sr-only">LinkedIn</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </a>
+                )}
+                {author.data.github && (
+                  <a 
+                    href={`https://github.com/${author.data.github}`} 
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span class="sr-only">GitHub</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                  </a>
+                )}
+                {author.data.website && (
+                  <a 
+                    href={author.data.website} 
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span class="sr-only">Website</span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9m0 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
+            )}
+
+            <!-- Author Stats -->
+            <div class="flex justify-center space-x-8 text-sm text-gray-500 mb-8">
+              <div class="text-center">
+                <div class="font-semibold text-2xl text-gray-900">{totalPosts}</div>
+                <div>Article{totalPosts !== 1 ? 's' : ''}</div>
+              </div>
+              {authorSince && (
+                <div class="text-center">
+                  <div class="font-semibold text-2xl text-gray-900">
+                    {authorSince.getFullYear()}
+                  </div>
+                  <div>Writing since</div>
+                </div>
+              )}
+            </div>
+
+            <!-- Expertise Tags -->
+            {author.data.expertise && author.data.expertise.length > 0 && (
+              <div class="mb-12">
+                <h3 class="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">Expertise</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                  {author.data.expertise.map((skill: string) => (
+                    <span class="inline-block bg-gray-100 text-gray-600 text-sm px-4 py-2 rounded-full">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Articles Section -->
+      {authorPosts.length > 0 ? (
+        <div>
+          <div class="border-t border-gray-200 pt-16">
+            <div class="text-center mb-16">
+              <h2 class="text-3xl md:text-4xl font-gambarino font-semibold text-gray-900 mb-4">
+                Articles by {author.data.name}
+              </h2>
+              <p class="text-xl text-gray-600">
+                {totalPosts} article{totalPosts !== 1 ? 's' : ''} • Latest: {latestPost?.data.pubDate.toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {authorPosts.map((post) => (
+                <article class="group">
+                  <div class="mb-4">
+                    <a href={`/blog/${post.slug}`} class="block">
+                      <h3 class="font-gambarino font-semibold text-gray-900 text-xl mb-3 leading-tight group-hover:text-gray-600 transition-colors">
+                        {post.data.title}
+                      </h3>
+                    </a>
+                    <p class="text-gray-600 leading-relaxed mb-4 line-clamp-3">
+                      {post.data.description}
+                    </p>
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                      <time datetime={post.data.pubDate.toISOString()}>
+                        {post.data.pubDate.toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}
+                      </time>
+                      <span>{post.data.readTime}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                      {post.data.tags.slice(0, 3).map((tag: string) => (
+                        <span class="inline-block bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div class="border-t border-gray-200 pt-16 text-center">
+          <div class="max-w-2xl mx-auto">
+            <h2 class="text-2xl font-gambarino font-semibold text-gray-900 mb-4">
+              No articles yet
+            </h2>
+            <p class="text-xl text-gray-600">
+              {author.data.name} hasn't published any articles yet, but check back soon!
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(personData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />
+</Layout>
+
+<style>
+  /* Line clamp utility for description text */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

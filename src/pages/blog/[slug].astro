@@ -1,0 +1,437 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { render } from 'astro:content';
+import { SITE_NAME, SITE_DESCRIPTION, SITE_LOGO, SOCIAL_LINKS } from '../../config/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// get all posts for related posts
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// extract table of contents from markdown
+function extractHeadings(markdown: string) {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headings: Array<{level: number, text: string, slug: string}> = [];
+  let match;
+  
+  while ((match = headingRegex.exec(markdown)) !== null) {
+    const level = match[1].length;
+    const text = match[2].trim();
+    const slug = text.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+    
+    headings.push({ level, text, slug });
+  }
+  
+  return headings;
+}
+
+const tableOfContents = extractHeadings(post.body);
+
+// structured data for SEO
+const articleData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "image": `${Astro.site}${post.data.heroImage || '/blog/default-featured.jpg'}`,
+  "author": {
+    "@type": "Person",
+    "name": post.data.author.name,
+    "description": post.data.author.bio,
+    "url": `${Astro.site}/authors/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": SITE_NAME,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${Astro.site}${SITE_LOGO}`
+    }
+  },
+  "datePublished": post.data.pubDate.toISOString(),
+  "dateModified": post.data.updatedDate?.toISOString() || post.data.pubDate.toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `${Astro.site}/blog/${post.slug}`
+  },
+  "keywords": post.data.tags.join(', '),
+  "articleSection": "Technology"
+};
+
+const breadcrumbData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": Astro.site
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": `${Astro.site}/blog`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": post.data.title,
+      "item": `${Astro.site}/blog/${post.slug}`
+    }
+  ]
+};
+
+const organizationData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": SITE_NAME,
+  "url": Astro.site,
+  "logo": `${Astro.site}${SITE_LOGO}`,
+  "description": SITE_DESCRIPTION,
+  "sameAs": [
+    SOCIAL_LINKS.twitter,
+    SOCIAL_LINKS.linkedin
+  ]
+};
+---
+
+<Layout title={`${post.data.title} - ${SITE_NAME} Blog`} description={post.data.description}>
+  <div class="min-h-screen bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-24">
+      <!-- Breadcrumb -->
+      <nav class="mb-16">
+        <ol class="flex items-center space-x-2 text-sm text-gray-500">
+          <li><a href="/" class="hover:text-gray-700 transition-colors">Home</a></li>
+          <li class="text-gray-300">/</li>
+          <li><a href="/blog" class="hover:text-gray-700 transition-colors">Blog</a></li>
+          <li class="text-gray-300">/</li>
+          <li class="text-gray-900">{post.data.title}</li>
+        </ol>
+      </nav>
+
+      <!-- Main Content -->
+      <article class="max-w-none">
+        <!-- Header -->
+        <header class="mb-16 text-center">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-gambarino font-bold mb-8 leading-tight tracking-tight text-gray-900">
+            {post.data.title}
+          </h1>
+          <p class="text-xl md:text-2xl leading-relaxed text-gray-600 mb-12 max-w-3xl mx-auto">
+            {post.data.description}
+          </p>
+
+          <!-- Article Meta -->
+          <div class="flex items-center justify-center space-x-8 text-sm text-gray-500 mb-8">
+            <div class="flex items-center">
+              <img 
+                src={post.data.author.avatar || '/avatars/default.jpg'} 
+                alt={post.data.author.name}
+                class="w-8 h-8 rounded-full mr-3"
+                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiLz4KPC9zdmc+Cjwvc3ZnPg=='"
+              />
+              <a 
+                href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                class="font-medium text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                {post.data.author.name}
+              </a>
+            </div>
+            <div>
+              {post.data.pubDate.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </div>
+            <div>{post.data.readTime}</div>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap justify-center gap-3">
+            {post.data.tags.map((tag: string) => (
+              <span class="inline-block bg-gray-100 text-gray-600 text-sm px-4 py-2 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        <!-- Article Content -->
+        <div class="max-w-none article-content prose prose-lg mx-auto">
+          <Content />
+        </div>
+
+        <!-- Author Bio -->
+        <div class="mt-24 pt-12 border-t border-gray-200">
+          <div class="flex items-start max-w-2xl">
+            <a href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}>
+              <img 
+                src={post.data.author.avatar || '/avatars/default.jpg'} 
+                alt={post.data.author.name}
+                class="w-16 h-16 rounded-full mr-6 flex-shrink-0 hover:opacity-90 transition-opacity"
+                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
+              />
+            </a>
+            <div>
+              <h3 class="text-xl font-gambarino font-semibold text-gray-900 mb-3">
+                About 
+                <a 
+                  href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  class="hover:text-gray-600 transition-colors"
+                >
+                  {post.data.author.name}
+                </a>
+              </h3>
+              <p class="text-gray-600 mb-4 leading-relaxed">{post.data.author.bio}</p>
+              <div class="flex space-x-6">
+                <a 
+                  href={`/blog/author/${post.data.author.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  class="text-gray-500 hover:text-gray-700 transition-colors text-sm"
+                >
+                  View all articles
+                </a>
+                {post.data.author.twitter && (
+                  <a href={`https://twitter.com/${post.data.author.twitter}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                    Twitter
+                  </a>
+                )}
+                {post.data.author.linkedin && (
+                  <a href={`https://linkedin.com/in/${post.data.author.linkedin}`} class="text-gray-500 hover:text-gray-700 transition-colors text-sm">
+                    LinkedIn
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Related Posts -->
+        {sortedPosts.filter(p => p.slug !== post.slug).length > 0 && (
+          <div class="mt-24 pt-12 border-t border-gray-200">
+            <h3 class="text-2xl font-gambarino font-semibold text-gray-900 mb-12 text-center">Related Posts</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {sortedPosts
+                .filter(p => p.slug !== post.slug)
+                .slice(0, 2)
+                .map((relatedPost) => (
+                  <div>
+                    <h4 class="font-gambarino font-semibold text-gray-900 mb-3 leading-tight text-lg">
+                      <a href={`/blog/${relatedPost.slug}`} class="hover:text-gray-600 transition-colors">
+                        {relatedPost.data.title}
+                      </a>
+                    </h4>
+                    <p class="text-gray-600 mb-3 leading-relaxed">{relatedPost.data.description}</p>
+                    <p class="text-sm text-gray-500">{relatedPost.data.readTime}</p>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
+  </div>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(organizationData)} />
+</Layout>
+
+<style>
+  /* Clean, minimal typography for article content */
+  .article-content {
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  .article-content h1 {
+    font-family: var(--font-gambarino);
+    font-weight: 600;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    color: #111827;
+    margin: 3rem 0 2rem 0;
+  }
+
+  .article-content h2 {
+    font-family: var(--font-gambarino);
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 1.3;
+    color: #111827;
+    margin: 3rem 0 1.5rem 0;
+  }
+
+  .article-content h3 {
+    font-family: var(--font-gambarino);
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: #374151;
+    margin: 2.5rem 0 1.25rem 0;
+  }
+
+  .article-content h4 {
+    font-family: var(--font-gambarino);
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: #374151;
+    margin: 2rem 0 1rem 0;
+  }
+
+  .article-content p {
+    color: #374151;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+    font-size: 1.125rem;
+  }
+
+  .article-content ul {
+    margin: 2rem 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content ul li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+    color: #374151;
+    line-height: 1.75;
+    font-size: 1.125rem;
+  }
+
+  .article-content ul li::before {
+    content: '•';
+    color: #9ca3af;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .article-content ol {
+    margin: 2rem 0;
+    padding-left: 2rem;
+  }
+
+  .article-content ol li {
+    margin-bottom: 1rem;
+    color: #374151;
+    line-height: 1.75;
+    font-size: 1.125rem;
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid #e5e7eb;
+    padding-left: 2rem;
+    margin: 3rem 0;
+    font-style: italic;
+    color: #6b7280;
+    font-size: 1.25rem;
+    line-height: 1.75;
+  }
+
+  .article-content blockquote p {
+    margin-bottom: 0;
+  }
+
+  .article-content strong {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .article-content code {
+    background-color: #f3f4f6;
+    color: #1f2937;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+    font-family: ui-monospace, 'SF Mono', monospace;
+  }
+
+  .article-content pre {
+    background-color: #1f2937;
+    color: #f9fafb;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 3rem 0;
+    font-family: ui-monospace, 'SF Mono', monospace;
+    line-height: 1.5;
+  }
+
+  .article-content pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  .article-content a {
+    color: #374151;
+    text-decoration: underline;
+    text-decoration-color: #d1d5db;
+    text-underline-offset: 3px;
+    transition: all 0.2s;
+  }
+
+  .article-content a:hover {
+    color: #111827;
+    text-decoration-color: #9ca3af;
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3rem 0;
+  }
+
+  .article-content table th {
+    padding: 1rem;
+    text-align: left;
+    font-family: var(--font-gambarino);
+    font-weight: 600;
+    color: #111827;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .article-content table td {
+    padding: 1rem;
+    color: #374151;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .article-content table tbody tr:hover {
+    background-color: #f9fafb;
+  }
+
+  /* Add more breathing room between sections */
+  .article-content > * + * {
+    margin-top: 2rem;
+  }
+
+  .article-content > h1 + *,
+  .article-content > h2 + *,
+  .article-content > h3 + *,
+  .article-content > h4 + * {
+    margin-top: 1.5rem;
+  }
+</style>
+

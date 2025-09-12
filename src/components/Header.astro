@@ -1,0 +1,353 @@
+---
+export interface Props {
+  logo?: {
+    light: string;
+    dark: string;
+    alt: string;
+    href?: string;
+  };
+  navigation?: {
+    product?: {
+      label: string;
+      items: Array<{
+        name: string;
+        description: string;
+        href: string;
+        icon: string;
+      }>;
+      actions: Array<{
+        name: string;
+        href: string;
+        icon: string;
+      }>;
+    };
+    links: Array<{
+      name: string;
+      href: string;
+    }>;
+  };
+  cta?: {
+    text: string;
+    href: string;
+  };
+}
+
+const {
+  logo = {
+    light: "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=pink&shade=600",
+    dark: "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=pink&shade=500",
+    alt: "Density Disk",
+    href: "/"
+  },
+  navigation = {
+    product: {
+      label: "Product",
+      items: [
+        {
+          name: "Analytics",
+          description: "Get a better understanding of your traffic",
+          href: "#",
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-gray-600 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-white">
+            <path d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>`
+        },
+        {
+          name: "Engagement",
+          description: "Speak directly to your customers",
+          href: "#",
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-gray-600 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-white">
+            <path d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>`
+        },
+        {
+          name: "Security",
+          description: "Your customers' data will be safe and secure",
+          href: "#",
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-gray-600 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-white">
+            <path d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>`
+        },
+        {
+          name: "Integrations",
+          description: "Connect with third-party tools",
+          href: "#",
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-gray-600 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-white">
+            <path d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>`
+        },
+        {
+          name: "Automations",
+          description: "Build strategic funnels that will convert",
+          href: "#",
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 text-gray-600 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-white">
+            <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>`
+        }
+      ],
+      actions: [
+        {
+          name: "Watch demo",
+          href: "#",
+          icon: `<svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400 dark:text-gray-500">
+            <path d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm6.39-2.908a.75.75 0 0 1 .766.027l3.5 2.25a.75.75 0 0 1 0 1.262l-3.5 2.25A.75.75 0 0 1 8 12.25v-4.5a.75.75 0 0 1 .39-.658Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>`
+        },
+        {
+          name: "Contact sales",
+          href: "#",
+          icon: `<svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400 dark:text-gray-500">
+            <path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h1.148a1.5 1.5 0 0 1 1.465 1.175l.716 3.223a1.5 1.5 0 0 1-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 0 0 6.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 0 1 1.767-1.052l3.223.716A1.5 1.5 0 0 1 18 15.352V16.5a1.5 1.5 0 0 1-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 0 1 2.43 8.326 13.019 13.019 0 0 1 2 5V3.5Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>`
+        }
+      ]
+    },
+    links: [
+      { name: "Features", href: "#" },
+      { name: "Marketplace", href: "#" },
+      { name: "Company", href: "#" }
+    ]
+  },
+  cta = {
+    text: "Log in",
+    href: "#"
+  }
+} = Astro.props;
+---
+
+<header class="absolute top-0 left-0 right-0 z-50 bg-transparent">
+  <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+    <div class="flex lg:flex-1">
+      <a href={logo.href} class="-m-1.5 p-1.5">
+        <span class="sr-only">{logo.alt}</span>
+        <img src={logo.light} alt="" class="h-8 w-auto dark:hidden" />
+        <img src={logo.dark} alt="" class="h-8 w-auto not-dark:hidden" />
+      </a>
+    </div>
+    
+    <!-- Mobile menu button -->
+    <div class="flex lg:hidden">
+      <button 
+        type="button" 
+        id="mobile-menu-button"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-400"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
+          <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Desktop navigation -->
+    <div class="hidden lg:flex lg:gap-x-12">
+      {navigation.product && (
+        <div class="relative">
+          <button 
+            id="product-menu-button"
+            class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400"
+          >
+            {navigation.product.label}
+            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400 dark:text-gray-500">
+              <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+          </button>
+          
+          <!-- Product dropdown -->
+          <div 
+            id="product-dropdown"
+            class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-md -translate-x-1/2 px-3 opacity-0 invisible transition-all duration-200 ease-out"
+          >
+            <div class="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 dark:bg-gray-800 dark:ring-white/10">
+              <div class="p-4">
+                {navigation.product.items.map((item) => (
+                  <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5">
+                    <div class="flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white dark:bg-gray-700/50 dark:group-hover:bg-gray-700">
+                      <Fragment set:html={item.icon.replace('group-hover:text-indigo-600', 'group-hover:text-primary-600')} />
+                    </div>
+                    <div class="flex-auto">
+                      <a href={item.href} class="block font-semibold text-gray-900 dark:text-white">
+                        {item.name}
+                        <span class="absolute inset-0"></span>
+                      </a>
+                      <p class="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 dark:divide-white/10 dark:bg-gray-700/50">
+                {navigation.product.actions.map((action) => (
+                  <a href={action.href} class="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700/50">
+                    <Fragment set:html={action.icon} />
+                    {action.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {navigation.links.map((link) => (
+        <a href={link.href} class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400">
+          {link.name}
+        </a>
+      ))}
+    </div>
+    
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+      <a href={cta.href} class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400">
+        {cta.text} <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </nav>
+  
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-50 lg:hidden hidden">
+    <div class="fixed inset-0 bg-black/25" id="mobile-menu-backdrop"></div>
+    <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:sm:ring-gray-100/10">
+      <div class="flex items-center justify-between">
+        <a href={logo.href} class="-m-1.5 p-1.5">
+          <span class="sr-only">{logo.alt}</span>
+          <img src={logo.light} alt="" class="h-8 w-auto dark:hidden" />
+          <img src={logo.dark} alt="" class="h-8 w-auto not-dark:hidden" />
+        </a>
+        <button 
+          type="button" 
+          id="mobile-menu-close"
+          class="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-400"
+        >
+          <span class="sr-only">Close menu</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
+            <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="mt-6 flow-root">
+        <div class="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
+          <div class="space-y-2 py-6">
+            {navigation.product && (
+              <div class="-mx-3">
+                <button 
+                  type="button" 
+                  id="mobile-product-toggle"
+                  class="flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                >
+                  {navigation.product.label}
+                  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none transition-transform" id="mobile-product-arrow">
+                    <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                  </svg>
+                </button>
+                <div id="mobile-product-menu" class="mt-2 hidden space-y-2">
+                  {navigation.product.items.map((item) => (
+                    <a href={item.href} class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                      {item.name}
+                    </a>
+                  ))}
+                  {navigation.product.actions.map((action) => (
+                    <a href={action.href} class="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                      {action.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {navigation.links.map((link) => (
+              <a href={link.href} class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                {link.name}
+              </a>
+            ))}
+          </div>
+          
+          <div class="py-6">
+            <a href={cta.href} class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+              {cta.text}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Desktop product menu
+  const productButton = document.getElementById('product-menu-button');
+  const productDropdown = document.getElementById('product-dropdown');
+  let productMenuOpen = false;
+
+  if (productButton && productDropdown) {
+    productButton.addEventListener('mouseenter', () => {
+      productMenuOpen = true;
+      productDropdown.classList.remove('opacity-0', 'invisible');
+      productDropdown.classList.add('opacity-100', 'visible');
+    });
+
+    productButton.addEventListener('mouseleave', () => {
+      productMenuOpen = false;
+      setTimeout(() => {
+        if (!productMenuOpen) {
+          productDropdown.classList.add('opacity-0', 'invisible');
+          productDropdown.classList.remove('opacity-100', 'visible');
+        }
+      }, 100);
+    });
+
+    productDropdown.addEventListener('mouseenter', () => {
+      productMenuOpen = true;
+    });
+
+    productDropdown.addEventListener('mouseleave', () => {
+      productMenuOpen = false;
+      productDropdown.classList.add('opacity-0', 'invisible');
+      productDropdown.classList.remove('opacity-100', 'visible');
+    });
+  }
+
+  // Mobile menu
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
+  if (mobileMenuClose && mobileMenu) {
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (mobileMenuBackdrop && mobileMenu) {
+    mobileMenuBackdrop.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Mobile product submenu
+  const mobileProductToggle = document.getElementById('mobile-product-toggle');
+  const mobileProductMenu = document.getElementById('mobile-product-menu');
+  const mobileProductArrow = document.getElementById('mobile-product-arrow');
+
+  if (mobileProductToggle && mobileProductMenu && mobileProductArrow) {
+    mobileProductToggle.addEventListener('click', () => {
+      const isHidden = mobileProductMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileProductMenu.classList.remove('hidden');
+        mobileProductArrow.style.transform = 'rotate(180deg)';
+      } else {
+        mobileProductMenu.classList.add('hidden');
+        mobileProductArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+</script>

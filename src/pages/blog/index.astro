@@ -1,0 +1,87 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { SITE_NAME, SITE_DESCRIPTION, SITE_LOGO, SOCIAL_LINKS } from '../../config/site';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const organizationData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": SITE_NAME,
+  "url": Astro.site,
+  "logo": `${Astro.site}${SITE_LOGO}`,
+  "description": SITE_DESCRIPTION,
+  "sameAs": [
+    SOCIAL_LINKS.twitter,
+    SOCIAL_LINKS.linkedin
+  ]
+};
+---
+
+<Layout title={`Blog - ${SITE_NAME}`} description="Insights, tips, and strategies for optimizing your storage infrastructure and improving system performance.">
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <div class="text-center mb-20">
+        <h1 class="heading-accent mb-6">
+          The Density Disk Blog
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Insights, tips, and strategies for optimizing your storage infrastructure and improving system performance.
+        </p>
+      </div>
+
+      <!-- Blog Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedPosts.map((post) => (
+          <article class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <img 
+                  src={post.data.author.avatar || '/avatars/default.jpg'} 
+                  alt={post.data.author.name}
+                  class="w-10 h-10 rounded-full mr-3"
+                  onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxMCIgeT0iMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
+                />
+                <div>
+                  <p class="text-sm font-medium text-gray-900">{post.data.author.name}</p>
+                  <p class="text-xs text-gray-500">{post.data.pubDate.toLocaleDateString()}</p>
+                </div>
+              </div>
+              
+              <h2 class="text-xl font-gambarino font-semibold text-gray-900 mb-3 hover:text-slate-600 transition-colors leading-tight">
+                <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+              </h2>
+              
+              <p class="text-gray-600 mb-4 line-clamp-3">{post.data.description}</p>
+              
+              <div class="flex items-center justify-between">
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.slice(0, 2).map((tag: string) => (
+                    <span class="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <span class="text-xs text-gray-500">{post.data.readTime}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(organizationData)} />
+</Layout>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
