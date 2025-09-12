@@ -1,8 +1,7 @@
 ---
 title: "Stripe pause subscription turns cancellations into holds"
 description: "Learn how to implement Stripe pause subscription features to reduce churn and retain customers who might otherwise cancel permanently."
-pubDate: 2024-12-13
-updatedDate: 2024-12-13
+pubDate: 2025-09-12
 heroImage: "/blog/stripe-pause-featured.jpg"
 author:
   name: "Ben Robertson"

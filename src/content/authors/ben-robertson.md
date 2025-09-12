@@ -8,7 +8,7 @@ avatar: "/avatars/ben-smith.jpg"
 twitter: "benrobertsonio"
 linkedin: "benjamingrobertson"
 github: "benrobertsonio"
-website: "https://churnpill.com"
+website: "https://ben.robertson.is"
 location: "Travelers Rest, SC"
 expertise:
   [
@@ -22,6 +22,8 @@ joinDate: 2025-09-12
 featured: true
 ---
 
-Ben Robertson is a serial entrepreneur and retention expert who has spent the last decade helping SaaS companies build sustainable growth engines. After experiencing firsthand the devastating impact of high churn rates at his previous startup, Ben became obsessed with understanding the patterns that predict customer loss.
+Ben Robertson is the founder of ChurnPill, a SaaS retention platform helping businesses reduce customer churn through predictive analytics and automated interventions. A seasoned customer success leader, Ben brings deep expertise from leading customer success teams at Gatsby Inc and Netlify, where he helped SaaS companies build sustainable growth engines.
 
-His data-driven approach to retention has been featured in leading publications and he's a frequent speaker at SaaS conferences around the world. When he's not diving into cohort analyses, you can find Ben hiking in Marin County or experimenting with new coffee brewing methods.
+He built ChurnPill after experiencing firsthand the devastating impact of high churn rates and seeing how existing tools failed to predict and prevent customer loss.
+
+Ben lives in South Carolina with his family, and continues to lead product development personally to ensure every customer gets the retention insights they need to grow sustainably.

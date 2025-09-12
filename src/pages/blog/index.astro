@@ -22,52 +22,71 @@ const organizationData = {
 
 <Layout title={`Blog - ${SITE_NAME}`} description="Insights, tips, and strategies for optimizing your storage infrastructure and improving system performance.">
   <div class="min-h-screen bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-36">
       <!-- Header -->
       <div class="text-center mb-20">
         <h1 class="heading-accent mb-6">
-          The Density Disk Blog
+          The {SITE_NAME} Blog
         </h1>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Insights, tips, and strategies for optimizing your storage infrastructure and improving system performance.
+          Insights, tips, and strategies for optimizing your SaaS and improving retention.
         </p>
       </div>
 
-      <!-- Blog Posts Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Blog Posts -->
+      <div class="max-w-4xl mx-auto space-y-16">
         {sortedPosts.map((post) => (
-          <article class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
-            <div class="p-6">
-              <div class="flex items-center mb-4">
+          <article class="group">
+            <a href={`/blog/${post.slug}`} class="block">
+              <!-- Header -->
+              <div class="flex items-center mb-6">
                 <img 
                   src={post.data.author.avatar || '/avatars/default.jpg'} 
                   alt={post.data.author.name}
-                  class="w-10 h-10 rounded-full mr-3"
+                  class="w-12 h-12 rounded-full mr-4"
                   onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxMCIgeT0iMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
                 />
                 <div>
-                  <p class="text-sm font-medium text-gray-900">{post.data.author.name}</p>
-                  <p class="text-xs text-gray-500">{post.data.pubDate.toLocaleDateString()}</p>
+                  <p class="font-medium text-gray-900 text-sm">{post.data.author.name}</p>
+                  <p class="text-gray-500 text-sm">
+                    {post.data.pubDate.toLocaleDateString('en-US', { 
+                      month: 'long', 
+                      day: 'numeric', 
+                      year: 'numeric' 
+                    })}
+                  </p>
                 </div>
               </div>
-              
-              <h2 class="text-xl font-gambarino font-semibold text-gray-900 mb-3 hover:text-slate-600 transition-colors leading-tight">
-                <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+
+              <!-- Title -->
+              <h2 class="font-gambarino text-3xl font-semibold text-gray-900 mb-4 group-hover:text-slate-600 transition-colors leading-tight">
+                {post.data.title}
               </h2>
               
-              <p class="text-gray-600 mb-4 line-clamp-3">{post.data.description}</p>
+              <!-- Description -->
+              <p class="text-gray-600 text-lg leading-relaxed mb-6 line-clamp-3">
+                {post.data.description}
+              </p>
               
-              <div class="flex items-center justify-between">
+              <!-- Footer -->
+              <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div class="flex flex-wrap gap-2">
-                  {post.data.tags.slice(0, 2).map((tag: string) => (
-                    <span class="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
+                  {post.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="inline-block bg-gray-50 text-gray-700 text-sm px-3 py-1 rounded-full font-medium">
                       {tag}
                     </span>
                   ))}
                 </div>
-                <span class="text-xs text-gray-500">{post.data.readTime}</span>
+                <div class="flex items-center text-gray-500">
+                  {post.data.readTime && (
+                    <span class="text-sm font-medium">{post.data.readTime}</span>
+                  )}
+                  <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
               </div>
-            </div>
+            </a>
           </article>
         ))}
       </div>

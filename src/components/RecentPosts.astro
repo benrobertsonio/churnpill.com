@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const recentPosts = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3); // Show 3 most recent posts
+---
+
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <h2 class="heading-accent mb-4">Latest Insights</h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Stay up to date with the latest strategies and insights for reducing churn and growing your SaaS business.
+      </p>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      {recentPosts.map((post) => (
+        <article class="bg-gray-50 rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden group">
+          <div class="p-8">
+            <!-- Author & Date -->
+            <div class="flex items-center mb-4">
+              <img 
+                src={post.data.author.avatar || '/avatars/default.jpg'} 
+                alt={post.data.author.name}
+                class="w-10 h-10 rounded-full mr-3"
+                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB4PSIxMCIgeT0iMTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMC0wLTQgNHYyIi8+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPgo8L3N2Zz4KPC9zdmc+'"
+              />
+              <div>
+                <p class="text-sm font-medium text-gray-900">{post.data.author.name}</p>
+                <p class="text-xs text-gray-500">
+                  {post.data.pubDate.toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })}
+                </p>
+              </div>
+            </div>
+
+            <!-- Title & Description -->
+            <h3 class="text-xl font-gambarino font-semibold text-gray-900 mb-3 group-hover:text-slate-600 transition-colors leading-tight">
+              <a href={`/blog/${post.slug}`} class="block">
+                {post.data.title}
+              </a>
+            </h3>
+            
+            <p class="text-gray-600 mb-6 line-clamp-3 leading-relaxed">
+              {post.data.description}
+            </p>
+            
+            <!-- Footer -->
+            <div class="flex items-center justify-between">
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.slice(0, 2).map((tag: string) => (
+                  <span class="inline-block bg-white text-gray-700 text-xs px-3 py-1 rounded-full border border-gray-200">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              {post.data.readTime && (
+                <span class="text-xs text-gray-500 font-medium">{post.data.readTime}</span>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- View All Link -->
+    <div class="text-center">
+      <a 
+        href="/blog" 
+        class="inline-flex items-center px-6 py-3 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors duration-200"
+      >
+        View All Articles
+        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
