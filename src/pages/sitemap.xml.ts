@@ -17,7 +17,7 @@ export const GET: APIRoute = async () => {
   ${staticPages
     .map(
       (page) => `  <url>
-    <loc>${SITE_URL}/${page}</loc>
+    <loc>${SITE_URL}/${page}${page === "" ? "" : "/"}</loc>
     <changefreq>weekly</changefreq>
     <priority>${page === "" ? "1.0" : "0.8"}</priority>
   </url>`
@@ -26,7 +26,7 @@ export const GET: APIRoute = async () => {
   ${blogPosts
     .map(
       (post) => `  <url>
-    <loc>${SITE_URL}/blog/${post.slug}</loc>
+    <loc>${SITE_URL}/blog/${post.slug}/</loc>
     <lastmod>${
       post.data.updatedDate
         ? post.data.updatedDate.toISOString().split("T")[0]
@@ -40,7 +40,7 @@ export const GET: APIRoute = async () => {
   ${authors
     .map(
       (author) => `  <url>
-    <loc>${SITE_URL}/blog/author/${author.slug}</loc>
+    <loc>${SITE_URL}/blog/author/${author.slug}/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>`
