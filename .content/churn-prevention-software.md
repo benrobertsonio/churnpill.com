@@ -54,8 +54,32 @@ According to [Stripe's research](https://stripe.com/resources/more/churn-prevent
 
 ## Choosing the right churn prevention platform
 
-{Description: Practical guidance on evaluating churn prevention software. Cover key features to look for: data integration capabilities, prediction accuracy, automation workflows, customization options, and reporting. Include implementation considerations like setup complexity, team training requirements, and integration with existing tools. Mention specific platform types and when each works best for different business sizes and models.}
+Not all churn prevention software is created equal. The wrong choice means months of implementation hell and mediocre results. Here's what actually matters when evaluating platforms.
+
+**Data integration breadth** separates the winners from the wannabes. Your platform needs to pull data from everywhere customers interact with your business - billing systems, support tickets, product usage, email engagement, even sales calls. Single-source platforms miss critical signals.
+
+**Prediction accuracy** varies wildly between vendors. Ask for specific metrics: what percentage of their "high-risk" predictions actually churn? Some platforms throw around 90%+ accuracy claims that crumble under scrutiny. Request case studies from businesses similar to yours.
+
+**Workflow customization** determines whether the software fits your business or forces you to change your processes. Can you customize risk scores based on your specific metrics? Set up multi-step campaigns with different triggers? Create different paths for various customer segments?
+
+For smaller teams (under 50 employees), look for plug-and-play solutions with pre-built templates. Companies like ChurnZero focus on quick wins without extensive setup. According to [Gartner's research](https://www.gartner.com/en/digital-markets/insights/churn-prevention), these typically cost $50-200/month and can be running within days.
+
+Enterprise teams need platforms that handle complex data sources and custom workflows. Think Gainsight or Totango - they offer deeper customization but require dedicated implementation teams and typically cost $500-2000+ monthly.
+
+Implementation complexity matters more than most buyers realize. Simple platforms get you results in weeks. Complex ones can take 3-6 months of setup before you see any value.
 
 ## Measuring success and optimizing your churn prevention program
 
-{Description: How to track the effectiveness of churn prevention software through key metrics: churn rate reduction, customer lifetime value improvements, intervention success rates, and ROI calculations. Explain how to set up proper measurement frameworks, benchmark performance, and continuously optimize campaigns based on results. Include common optimization strategies and how to avoid measurement pitfalls.}
+Your churn prevention software is only as good as your ability to measure and optimize it. Most companies track the wrong metrics and miss obvious improvement opportunities.
+
+**Start with baseline measurements**. Before implementing any churn prevention tool, establish your current monthly and annual churn rates by customer segment. High-value customers should have different benchmarks than new signups. Without solid baselines, you can't prove the software works.
+
+**Track intervention success rates, not just churn reduction**. If your software flags 100 high-risk customers monthly and sends them retention campaigns, how many actually stay? Industry benchmarks suggest 15-25% of flagged customers should be saveable with targeted interventions. If you're below 10%, your risk scoring needs work.
+
+**Measure customer lifetime value improvements**. Retained customers typically increase their spending over time through upgrades and add-ons. According to [research from Stripe](https://stripe.com/resources/more/churn-prevention-101-nine-ways-to-prevent-churn-that-businesses-need-to-know), customers who go through successful retention campaigns show 20-40% higher lifetime values than those who never hit churn risk.
+
+**Calculate true ROI beyond subscription revenue**. Factor in referrals, case studies, and expansion revenue from saved customers. A $500/month customer might be worth $3,000+ in total value when accounting for network effects.
+
+**Optimize by campaign type and customer segment**. Educational content works better for users who aren't fully onboarded. Pricing incentives work for price-sensitive segments. Personal outreach works for high-value enterprise accounts. Test different approaches and double down on what works for each group.
+
+Most successful programs iterate monthly, not quarterly. Small improvements compound fast when you're dealing with ongoing customer relationships.
